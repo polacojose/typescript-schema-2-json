@@ -2,6 +2,29 @@ use regex_lite::Regex;
 use serde::Serialize;
 use std::{collections::HashMap, fs, str::Lines};
 
+mod utils;
+
+use wasm_bindgen::prelude::*;
+
+// When the `wee_alloc` feature is enabled, use `wee_alloc` as the global
+// allocator.
+#[cfg(feature = "wee_alloc")]
+#[global_allocator]
+static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
+
+#[wasm_bindgen]
+extern "C" {
+    #[wasm_bindgen(js_namespace = console)]
+    fn log(s: &str);
+}
+
+#[wasm_bindgen]
+pub fn parse(file_contents: &str) -> JsValue {
+    TypescriptSchemaParser::parse_single(file_contents)
+        .unwrap()
+        .into()
+}
+
 #[derive(Debug, Serialize)]
 struct JsonReferenceObject {
     class_name: String,
@@ -52,11 +75,10 @@ impl<'a> TypescriptSchemaParser<'a> {
         return serde_json::to_string(&parser.json_reference_object).map_err(|_| UnableToParse);
     }
 
-    pub fn parse(file_list: Vec<String>) -> Result<String, UnableToParse> {
+    pub fn parse(file_contents: Vec<String>) -> Result<String, UnableToParse> {
         let mut json_reference_objects = vec![];
-        for file_path in file_list {
-            let doc_string = fs::read_to_string(file_path.clone()).unwrap();
-            let mut parser = TypescriptSchemaParser::new(doc_string.as_ref());
+        for file_content in file_contents {
+            let mut parser = TypescriptSchemaParser::new(&file_content);
             while parser.process() {}
 
             if !parser.json_reference_object.class_name.is_empty() {
@@ -146,16 +168,10 @@ mod tests {
     fn test_parse() {
         let doc_string = fs::read_to_string("assets/Greeter.ts").unwrap();
         let result = TypescriptSchemaParser::parse_single(doc_string);
-        println!("{:?}", result);
-    }
-
-    #[test]
-    fn test_parse_multiple() {
-        let file_list = list_files("assets/");
-        let result = TypescriptSchemaParser::parse(file_list).unwrap();
-
-        println!("{:?}", result);
-
-        fs::write("out.json", result).unwrap();
+        assert!(result.is_ok());
+        assert_eq!(
+            result.unwrap(),
+            "{\"class_name\":\"Greeter\",\"properties\":{\"greeting\":\"string\"}}"
+        );
     }
 }

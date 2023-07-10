@@ -1,0 +1,23 @@
+{
+  "name": "typescript-schema-2-json",
+  "version": "1.0.0",
+  "description": "",
+  "main": "TypescriptSchema2JSON.js",
+  "scripts": {
+    "build": "wasm-pack build --target nodejs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/polacojose/typescript-schema-2-json.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/polacojose/typescript-schema-2-json/issues"
+  },
+  "homepage": "https://github.com/polacojose/typescript-schema-2-json#readme",
+  "dependencies": {
+    "glob": "^10.3.3"
+  }
+}
