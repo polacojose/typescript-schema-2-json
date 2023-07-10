@@ -11,7 +11,7 @@ class TypescriptSchema2JSON {
 
 	compileTS() {
 
-		const wasm = require(`${__dirname}/pkg/`);
+		const wasm = require(`${__dirname}/pkg/typescript_schema_2_json.js`);
 
 		const results = [];
 		glob(this.source).then(matchingFiles => {
