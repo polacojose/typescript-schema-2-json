@@ -4,7 +4,7 @@
   "description": "",
   "main": "TypescriptSchema2JSON.js",
   "scripts": {
-    "build": "wasm-pack build --target nodejs"
+    "build": "wasm-pack build --target nodejs && rm pkg/.gitignore && rm pkg/package.json"
   },
   "repository": {
     "type": "git",
