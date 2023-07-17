@@ -1,6 +1,7 @@
 const pluginName = 'TypescriptSchema2JSON';
 const fs = require('fs');
 const { glob } = require('glob');
+const path = require('path');
 
 class TypescriptSchema2JSON {
 
@@ -22,6 +23,12 @@ class TypescriptSchema2JSON {
 					results.push(JSON.parse(wasm.parse(fileContents)))
 				}
 			}
+
+			var dirname = path.dirname(this.dest);
+			if (!fs.existsSync(dirname)) {
+				fs.mkdirSync(dirname);
+			}
+
 			const output = JSON.stringify(results, null, 2);
 			fs.writeFileSync(this.dest, output);
 		});
