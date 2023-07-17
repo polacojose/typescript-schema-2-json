@@ -26,7 +26,7 @@ class TypescriptSchema2JSON {
 
 			var dirname = path.dirname(this.dest);
 			if (!fs.existsSync(dirname)) {
-				fs.mkdirSync(dirname);
+				fs.mkdirSync(dirname, { recursive: true });
 			}
 
 			const output = JSON.stringify(results, null, 2);
