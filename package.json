@@ -1,6 +1,6 @@
 {
   "name": "typescript-schema-2-json",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "",
   "main": "TypescriptSchema2JSON.js",
   "scripts": {

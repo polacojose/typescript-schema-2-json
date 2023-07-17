@@ -31,6 +31,7 @@ class TypescriptSchema2JSON {
 
 			const output = JSON.stringify(results, null, 2);
 			fs.writeFileSync(this.dest, output);
+			console.log(`${pluginName}: Output written to ${this.dest}`);
 		});
 	}
 
